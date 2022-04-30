@@ -20,13 +20,6 @@ jobs:
                   registry-url: 'https://npm.pkg.github.com'
             - name: Build & Release
               run: yarn install && yarn build
-            - name: Configure Git User
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NODE_ENV: production
-              run: |
-                  git config user.email "action@github.com"
-                  git config user.name "GitHub Action Branch"
             - name: Deploy To Github Pages
               run: npx -p @storybook/storybook-deployer storybook-to-ghpages --branch gh-pages --source-branch main --ci true
               env:
