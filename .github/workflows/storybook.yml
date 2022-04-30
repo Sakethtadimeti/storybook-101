@@ -20,10 +20,6 @@ jobs:
                   registry-url: 'https://npm.pkg.github.com'
             - name: Build & Release
               run: yarn install && yarn build
-            - name: Setup SSH
-              uses: webfactory/ssh-agent@v0.4.1
-              with:
-                  ssh-private-key: ${{ secrets.SSH_KEY }}
             - name: Configure Git User
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
