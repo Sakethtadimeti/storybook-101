@@ -1,0 +1,26 @@
+name: storybook-deploy
+on:
+    push:
+        branches:
+            - main
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        env:
+            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v2
+              with:
+                  persist-credentials: false
+            - name: Setup .npmrc file for publish
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '14'
+                  registry-url: 'https://npm.pkg.github.com'
+            - name: Build & Release
+              run: yarn install && yarn build
+            - name: Deploy To Github Pages
+              run: npx -p @storybook/storybook-deployer storybook-to-ghpages --branch gh-pages --source-branch main --ci true
+              env:
+                GH_TOKEN: ${{ secrets.GH_TOKEN }}
